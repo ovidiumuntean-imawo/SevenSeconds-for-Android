@@ -50,7 +50,7 @@ fun GameOverView(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black.copy(alpha = 0.95f))
-            .padding(16.dp)
+            .padding(0.dp)
     ) {
         // Background
         RotatingBackground(
@@ -135,7 +135,7 @@ fun GameOverView(
     }
 
     // Achievement Dialog
-    viewModel.achievementMessage?.let { message ->
+    /*viewModel.achievementMessage?.let { message ->
         AchievementDialog(
             message = message,
             onDismiss = {
@@ -150,7 +150,7 @@ fun GameOverView(
                 GooglePlayGamesManager.showLeaderboard(activity, leaderboardId)
             }
         )
-    }
+    }*/
 }
 
 @Composable

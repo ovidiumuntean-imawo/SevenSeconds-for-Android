@@ -37,6 +37,13 @@ class MainActivity : ComponentActivity() {
             hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
         }
 
+        AudioPlayerFactory.initSoundPool(
+            context = this,
+            R.raw.timer,
+            R.raw.button,
+            R.raw.explode
+        )
+
         setContent {
             SevenSecondsTheme {
                 GameView(
