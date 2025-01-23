@@ -16,6 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.imawo.sevenseconds.ui.theme.SevenSecondsTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,6 +29,12 @@ class MainActivity : ComponentActivity() {
 
         GooglePlayGamesManager.signIn(this) { success ->
             // handle sign in result
+        }
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
         }
 
         setContent {

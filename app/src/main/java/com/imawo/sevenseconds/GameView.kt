@@ -6,6 +6,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,11 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -49,10 +54,6 @@ fun GameView(
     // States for animations and particles
     var isAnimationActive by remember { mutableStateOf(false) }
     var areParticlesActive by remember { mutableStateOf(true) }
-
-    // Coordonatele butonului
-    var buttonX by remember { mutableStateOf(0f) }
-    var buttonY by remember { mutableStateOf(0f) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Background
@@ -151,46 +152,43 @@ fun GameView(
                 // Big Button with Particles
                 var isPressed by remember { mutableStateOf(false) }
 
-                // Coordonatele butonului
-                var buttonX by remember { mutableStateOf(0f) }
-                var buttonY by remember { mutableStateOf(0f) }
-
                 Box(
                     modifier = Modifier
                         .size(171.dp)
                         .scale(if (isPressed) 0.98f else 1.0f)
-                        .onGloballyPositioned { layoutCoordinates ->
-                            val position = layoutCoordinates.positionInRoot()
-                            buttonX = position.x + layoutCoordinates.size.width / 2
-                            buttonY = position.y + layoutCoordinates.size.height / 2
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onPress = {
+                                    if (!viewModel.isGameOver) {
+                                        if (!viewModel.isGameRunning) {
+                                            viewModel.startGame(context, leaderboardId)
+                                        } else {
+                                            viewModel.incrementScore()
+                                            viewModel.buttonPressed()
+                                        }
+                                    }
+
+                                    // Starea de apăsare activată
+                                    isPressed = true
+                                    tryAwaitRelease() // Așteaptă până când utilizatorul eliberează butonul
+                                    // Starea de apăsare dezactivată
+                                    isPressed = false
+                                }
+                            )
                         }
                 ) {
-                    // Logica butonului
-                    Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            .clickable {
-                                if (!viewModel.isGameOver) {
-                                    if (!viewModel.isGameRunning) {
-                                        viewModel.startGame(context, leaderboardId)
-                                    } else {
-                                        viewModel.incrementScore()
-                                        viewModel.buttonPressed()
-                                    }
-                                }
-                                isPressed = true
-                            }
-                    ) {
-                        Image(
-                            painter = painterResource(
-                                id = if (isPressed) R.drawable.button_pressed else R.drawable.button_normal
-                            ),
-                            contentDescription = "Big button",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape)
-                        )
+                    // Determinarea imaginii butonului
+                    val buttonImage = remember(viewModel.timeLeft, isPressed) {
+                        getButtonImage(viewModel.timeLeft, isPressed)
                     }
+
+                    Image(
+                        painter = painterResource(id = buttonImage),
+                        contentDescription = "Game button",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                    )
                 }
             }
 
@@ -202,8 +200,7 @@ fun GameView(
                 color = Color.White
             )
 
-            // Spacer cu dimensiune controlată (în loc de weight)
-            Spacer(modifier = Modifier.height(0.dp)) // Ajustează dimensiunea după preferințe
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Leaderboard Section
             AnimatedVisibility(
@@ -241,4 +238,33 @@ fun GameView(
             }
         }
     }
+}
+
+// Determină imaginea butonului în funcție de timpul rămas și dacă este apăsat
+fun getButtonImage(timeLeft: Int, isPressed: Boolean): Int {
+    return when {
+        timeLeft > 5 -> if (isPressed) R.drawable.button_pressed else R.drawable.button_normal
+        timeLeft in 3..5 -> if (isPressed) R.drawable.button_pressed_0 else R.drawable.button_normal_0
+        timeLeft <= 3 -> if (isPressed) R.drawable.button_pressed_2 else R.drawable.button_normal_2
+        else -> R.drawable.button_normal // Default fallback
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GameViewPreview() {
+    // Mock ViewModel
+    val mockViewModel = remember {
+        GameViewModel().apply {
+            timeLeft = 10
+            currentScore = 42
+            previousScore = 35
+        }
+    }
+
+    GameView(
+        activity = null, // Activitate nulă pentru previzualizare
+        viewModel = mockViewModel,
+        leaderboardId = "dummy_leaderboard_id"
+    )
 }

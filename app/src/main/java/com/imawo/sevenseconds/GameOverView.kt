@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.gms.games.Games
@@ -201,4 +202,30 @@ fun AchievementDialog(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GameOverViewPreview() {
+    val mockViewModel = remember {
+        GameViewModel().apply {
+            currentScore = 42
+            previousScore = 35
+            achievementMessage = "You unlocked a new achievement!"
+        }
+    }
+
+    // Mock Activity
+    val mockActivity = Activity()
+
+    // Mock leaderboard ID
+    val mockLeaderboardId = "dummy_leaderboard_id"
+
+    // Componența GameOverView
+    GameOverView(
+        viewModel = mockViewModel,
+        activity = mockActivity,
+        leaderboardId = mockLeaderboardId,
+        onClose = { /* No action needed for preview */ }
+    )
 }
