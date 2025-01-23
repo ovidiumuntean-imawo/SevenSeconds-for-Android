@@ -1,35 +1,42 @@
 package com.imawo.sevenseconds
 
-import ButtonParticleView
 import android.app.Activity
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.imawo.sevenseconds.GameViewModel
 
 @Composable
 fun GameView(
@@ -158,12 +165,6 @@ fun GameView(
                             buttonY = position.y + layoutCoordinates.size.height / 2
                         }
                 ) {
-                    // Efectul particulelor
-                    ButtonParticleView(
-                        startX = buttonX,
-                        startY = buttonY
-                    )
-
                     // Logica butonului
                     Box(
                         modifier = Modifier
@@ -237,55 +238,6 @@ fun GameView(
                 leaderboardId = leaderboardId
             ) {
                 isAnimationActive = false
-            }
-        }
-    }
-
-    @Composable
-    fun ButtonWithParticles(
-        modifier: Modifier = Modifier,
-        onButtonClick: () -> Unit
-    ) {
-        // Poziția centrului butonului
-        var buttonCenterX by remember { mutableStateOf(0f) }
-        var buttonCenterY by remember { mutableStateOf(0f) }
-
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Efect de particule
-            ButtonParticleView(
-                startX = buttonCenterX,
-                startY = buttonCenterY
-            )
-
-            // Butonul principal
-            Box(
-                modifier = modifier
-                    .size(120.dp)
-                    .onGloballyPositioned { layoutCoordinates ->
-                        val position = layoutCoordinates.positionInRoot()
-                        buttonCenterX = position.x + layoutCoordinates.size.width / 2
-                        buttonCenterY = position.y + layoutCoordinates.size.height / 2
-                    }
-                    .align(Alignment.Center)
-            ) {
-                // Butonul rotund cu imagine și animație
-                Button(
-                    onClick = onButtonClick,
-                    shape = CircleShape,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.button_normal), // Înlocuiește cu imaginea corectă
-                        contentDescription = "Button",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .graphicsLayer {
-                                shadowElevation = 8f
-                                shape = CircleShape
-                                clip = true // Asigură-te că totul este rotund
-                            }
-                    )
-                }
             }
         }
     }
