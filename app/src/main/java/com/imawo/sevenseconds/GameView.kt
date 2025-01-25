@@ -101,6 +101,8 @@ fun GameView(
                 )
             }
 
+            Spacer(modifier = Modifier.weight(0.5f))
+
             // Subtitle
             Text(
                 text = "Hit that button as fast as you can!",
@@ -200,7 +202,7 @@ fun GameView(
                 color = Color.White
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             // Leaderboard Section
             AnimatedVisibility(
@@ -225,6 +227,8 @@ fun GameView(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.weight(0.2f))
         }
 
         // Game Over Overlay

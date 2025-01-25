@@ -77,6 +77,8 @@ fun GameOverView(
                 modifier = Modifier.scale(animatedScaleGameOver)
             )
 
+            Spacer(modifier = Modifier.weight(1f))
+
             // Score Section
             Text(
                 text = "YOU SCORED",
@@ -94,6 +96,8 @@ fun GameOverView(
                 fontSize = 28.sp,
                 color = Color.White
             )
+
+            Spacer(modifier = Modifier.weight(1f))
 
             // Play Again Button
             Button(onClick = {
