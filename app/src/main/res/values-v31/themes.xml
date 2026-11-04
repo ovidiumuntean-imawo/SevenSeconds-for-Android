@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SevenSeconds" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/deep_space</item>
+        <item name="android:colorBackground">@color/deep_space</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <!-- Splash screen Android 12+: fundal spațial + iconița aplicației -->
+        <item name="android:windowSplashScreenBackground">@color/deep_space</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
+</resources>

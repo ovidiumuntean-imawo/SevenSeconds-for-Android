@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ID-urile din Play Console → Play Games Services → Configuration.
+  Cât timp au valoarea REPLACE_ME, integrarea Play Games este dezactivată automat (aplicația nu crapă).
+  Pe iOS achievements au id-uri de forma seven.seconds.master; pe Android Google generează id-uri CgkI…
+-->
+<resources>
+    <string name="game_services_project_id" translatable="false">REPLACE_ME</string>
+
+    <string name="leaderboard_main" translatable="false">REPLACE_ME</string>
+
+    <string name="achievement_dedicated_player" translatable="false">REPLACE_ME</string>
+    <string name="achievement_super_player" translatable="false">REPLACE_ME</string>
+    <string name="achievement_master" translatable="false">REPLACE_ME</string>
+    <string name="achievement_super_hero" translatable="false">REPLACE_ME</string>
+    <string name="achievement_god" translatable="false">REPLACE_ME</string>
+    <string name="achievement_cheater" translatable="false">REPLACE_ME</string>
+</resources>
