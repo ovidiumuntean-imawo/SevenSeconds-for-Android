@@ -1,3 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Seven Seconds</string>
+
+    <!-- HUD -->
+    <string name="time_idle">7 SECONDS</string>
+    <string name="target_hud">TARGET: %1$d</string>
+    <string name="score_label">SCORE</string>
+    <string name="tap_label">TAP</string>
+    <string name="ranks">RANKS</string>
+    <string name="best_hud">BEST %1$d</string>
+    <string name="cd_tap_button">Tap button. Tap as fast as you can.</string>
+    <string name="cd_settings">Settings</string>
+
+    <!-- Game Over -->
+    <string name="game_over">GAME OVER</string>
+    <string name="you_scored">YOU SCORED</string>
+    <string name="taps">TAPS</string>
+    <string name="new_best">NEW BEST!</string>
+    <string name="best_over">BEST: %1$d</string>
+    <string name="retry_mission">RETRY MISSION</string>
+    <string name="challenge_friend">CHALLENGE FRIEND</string>
+    <string name="share_challenge_text">I challenge you to 7 Seconds! I scored %1$d taps. Can you beat that? %2$s</string>
+    <string name="share_chooser_title">Challenge a friend</string>
+
+    <!-- Record -->
+    <string name="record_title">NEW RECORD! 🚀</string>
+    <string name="record_message">UNBELIEVABLE!\nYou hit %1$d taps.\nYou are officially a LEGEND.</string>
+    <string name="lets_go">Let\'s Go!</string>
+
+    <!-- Provocare -->
+    <string name="mission_accomplished">MISSION\nACCOMPLISHED</string>
+    <string name="mission_failed">MISSION\nFAILED</string>
+    <string name="target_colon">TARGET:</string>
+    <string name="you_colon">YOU:</string>
+    <string name="return_to_base">RETURN TO BASE</string>
+
+    <!-- Play Games -->
+    <string name="games_unavailable_title">Google Play Games is not available</string>
+    <string name="games_unavailable_message">Please sign in to Google Play Games to view High-Scores!</string>
+    <string name="games_not_configured">Play Games Services is not configured yet (see games-ids.xml).</string>
+
+    <!-- Setări -->
+    <string name="settings_title">SETTINGS</string>
+    <string name="settings_sound">Sound</string>
+    <string name="settings_haptics">Vibration</string>
+    <string name="settings_reduce_fx">Reduce effects</string>
+    <string name="settings_reduce_fx_hint">Less flashing, shaking and glitching</string>
+    <string name="settings_community">Community</string>
+    <string name="settings_close">CLOSE</string>
+
+    <!-- Rank-uri (titluri scurte pentru banner-ul din timpul jocului) -->
+    <string name="rank_rookie">ROOKIE</string>
+    <string name="rank_warming_up">WARMING UP</string>
+    <string name="rank_dedicated">DEDICATED PLAYER</string>
+    <string name="rank_super">SUPER PLAYER</string>
+    <string name="rank_master">MASTER</string>
+    <string name="rank_hero">SUPER HERO</string>
+    <string name="rank_god">GOD</string>
+    <string name="rank_cheater">CHEATER?</string>
+
+    <!-- Mesaje de rank (identice cu iOS) -->
+    <string name="msg_rookie">Every pro starts somewhere.\nYour journey just began! 🌟\n\nDon’t stop now – the button’s getting nervous!</string>
+    <string name="msg_warming_up">You’re warming up.\nGreatness is just a few clicks away! ⚡\n\nKeep at it – the leaderboard is calling your name!</string>
+    <string name="msg_dedicated">Dedicated player alert.\nYou’re officially in the game now! 🎯\n\nNow go smash that button like it owes you money!</string>
+    <string name="msg_super">Super player unlocked.\nYou’re crushing it – what’s next? 💥\n\nKeep going – the button might file a restraining order!</string>
+    <string name="msg_master">Master status achieved.\nThat’s some serious button-smashing talent! 👑\n\nPush harder – you’re one click away from greatness!</string>
+    <string name="msg_hero">Legends play like this.\nLeaderboard domination in progress! 🏆\n\nKeep smashing – you’re the hero this button deserves!</string>
+    <string name="msg_god">Did you just bend time?\nThe button fears you now. Respect!\n\nThe gods are watching – don’t let them down!</string>
+    <string name="msg_cheater">Are your fingers okay?\nIf this is cheating, you’re the Picasso of it. 🎨\n\nJust make sure your button doesn’t explode! 😅</string>
 </resources>

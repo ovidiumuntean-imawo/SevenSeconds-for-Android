@@ -5,26 +5,42 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".SevenSecondsApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.SevenSeconds"
-        tools:targetApi="31">
+        tools:targetApi="33">
+
+        <!-- ID-ul proiectului Play Games Services (Play Console → Play Games Services → Configuration) -->
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/game_services_project_id" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|density|fontScale|uiMode"
             android:theme="@style/Theme.SevenSeconds">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Provocări: sevenseconds://challenge?score=NN (aceeași schemă ca pe iOS) -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="sevenseconds" android:host="challenge" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -1,83 +1,91 @@
 package com.imawo.sevenseconds
 
-import android.annotation.SuppressLint
-import android.app.Activity
+import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.imawo.sevenseconds.core.GameConfig
+import com.imawo.sevenseconds.core.Platform
+import com.imawo.sevenseconds.core.PlayGamesBridge
+import com.imawo.sevenseconds.game.GameViewModel
+import com.imawo.sevenseconds.ui.SevenSecondsRoot
 import com.imawo.sevenseconds.ui.theme.SevenSecondsTheme
 
 class MainActivity : ComponentActivity() {
-    private val gameViewModel: GameViewModel by viewModels()
+
+    private val vm: GameViewModel by viewModels()
+
+    // pentru clasamente / achievements (Play Games deschide propriile ecrane)
+    private val gamesLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        GooglePlayGamesManager.signIn(this) { success ->
-            // handle sign in result
-        }
+        // telefon: portret; tabletă / pliabil deschis: orice orientare (layout-ul se scalează singur)
+        requestedOrientation =
+            if (resources.configuration.smallestScreenWidthDp >= 600) ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+            else ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, window.decorView).apply {
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
-        }
-
-        AudioPlayerFactory.initSoundPool(
-            context = this,
-            R.raw.timer,
-            R.raw.button,
-            R.raw.explode
-        )
+        applyImmersive()
+        Platform.requestHighRefreshRate(this)
+        PlayGamesBridge.attach(this, gamesLauncher)
+        handleIntent(intent)
 
         setContent {
             SevenSecondsTheme {
-                GameView(
-                    activity = this,
-                    viewModel = gameViewModel,
-                    leaderboardId = "YOUR_LEADERBOARD_ID"
-                )
+                SevenSecondsRoot(vm)
             }
         }
     }
-}
 
-@SuppressLint("ContextCastToActivity")
-@Preview(showBackground = true)
-@Composable
-fun GamePreview() {
-    SevenSecondsTheme {
-        // Creează o listă de emitters statice pentru previzualizare
-        val emitters = listOf(Offset(200f, 400f)) // Poziție statică a emitterului
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
 
-        // Stare mock pentru ViewModel
-        val mockViewModel = GameViewModel().apply {
-            timeLeft = 0
-            currentScore = 50
-            previousScore = 45
-            isGameRunning = false
-            isGameOver = true
-            achievementMessage = "Ai deblocat o realizare!"
+    override fun onResume() {
+        super.onResume()
+        PlayGamesBridge.refreshAuth()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) applyImmersive()
+    }
+
+    override fun onStop() {
+        vm.onAppStopped()
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        PlayGamesBridge.detach(this)
+        super.onDestroy()
+    }
+
+    private fun applyImmersive() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val c = WindowInsetsControllerCompat(window, window.decorView)
+        c.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        c.hide(WindowInsetsCompat.Type.systemBars())
+    }
+
+    /** sevenseconds://challenge?score=NN */
+    private fun handleIntent(i: Intent?) {
+        val data = i?.data ?: return
+        if (data.scheme == GameConfig.CHALLENGE_SCHEME && data.host == GameConfig.CHALLENGE_HOST) {
+            data.getQueryParameter("score")?.toIntOrNull()?.takeIf { it in 1..999 }?.let { vm.receiveChallenge(it) }
+            i.data = null // nu reprocesăm același link la recreare
         }
-        
-        GameView(
-            activity = null,
-            viewModel = mockViewModel,
-            leaderboardId = "dummy_leaderboard_id"
-        )
     }
 }

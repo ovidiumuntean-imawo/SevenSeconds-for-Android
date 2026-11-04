@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.SevenSeconds" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Fundal închis din prima frame (fără flash alb la pornire) -->
+    <style name="Theme.SevenSeconds" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/deep_space</item>
+        <item name="android:colorBackground">@color/deep_space</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>

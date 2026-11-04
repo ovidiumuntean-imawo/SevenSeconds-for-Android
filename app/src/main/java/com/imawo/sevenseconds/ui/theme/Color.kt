@@ -2,10 +2,15 @@ package com.imawo.sevenseconds.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Paleta neon — aceleași valori ca pe iOS (UIApplication+Extensions.swift)
+val NeonCyan = Color(0xFF00FFFF)
+val NeonBlue = Color(0xFF0080FF)
+val NeonPurple = Color(0xFF8000FF)
+val NeonRed = Color(0xFFFF1A1A)
+val NeonOrange = Color(0xFFFF8000)
+val DeepSpace = Color(0xFF0D0D1A)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Culorile de sistem iOS (dark mode) folosite în ecranele de rezultat / RANKS
+val SysYellow = Color(0xFFFFD60A)
+val SysGreen = Color(0xFF30D158)
+val SysRed = Color(0xFFFF453A)
