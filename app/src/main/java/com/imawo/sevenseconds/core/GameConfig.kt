@@ -22,7 +22,7 @@ object GameConfig {
      * true  = fiecare deget nou care atinge butonul contează (mai mulți degete ⇒ scoruri mai mari decât pe iOS);
      * false = paritate cu iOS (un singur deget odată).
      */
-    const val ALLOW_MULTITOUCH = true
+    const val ALLOW_MULTITOUCH = false
 
     /** Pauza dintre explozia finală și ecranul Game Over (lasă efectul să se vadă). */
     const val FINALE_DELAY_MS = 850L

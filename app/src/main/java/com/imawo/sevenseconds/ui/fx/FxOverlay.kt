@@ -7,9 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -22,7 +22,7 @@ import com.imawo.sevenseconds.ui.theme.NeonCyan
 import com.imawo.sevenseconds.ui.theme.SysYellow
 import kotlin.math.exp
 
-/** Stratul de deasupra HUD-ului: scântei, cioburi, „+1", bannere de rank, inele de șoc și flash-ul final. */
+/** Stratul de deasupra HUD-ului: scântei, cioburi, „+1", bannere de rank și flash-ul final. */
 @Composable
 fun FxOverlay(fx: FxEngine, modifier: Modifier = Modifier) {
     val measurer = rememberTextMeasurer()
@@ -38,16 +38,28 @@ fun FxOverlay(fx: FxEngine, modifier: Modifier = Modifier) {
         fx.subscribe()
         val u = density
 
-        // inele de șoc (se văd pe toate versiunile; pe Android 13+ însoțesc distorsiunea reală a fundalului)
-        for (w in 0 until 4) {
-            val age = fx.timeSec - fx.shock.t0[w]
-            if (age < 0f || age > 1.1f) continue
-            val a = (exp(-age * 2.6f) * fx.shock.power[w] * 0.5f).coerceIn(0f, 1f)
-            drawCircle(
-                color = NeonCyan.copy(alpha = a), radius = age * 620f * u,
-                center = Offset(fx.shock.ox[w], fx.shock.oy[w]),
-                style = Stroke(width = (1f + 5f * (1f - age / 1.1f)) * u), blendMode = BlendMode.Plus,
-            )
+        // Ripple-ul real = distorsiunea fundalului (Backdrop, AGSL) — fără cercuri de contur.
+        // Doar pe dispozitive fără AGSL (Android 12-) desenăm o undă moale, fără contur, ca ripple-ul să existe totuși.
+        if (!fx.reduce && !fx.rippleViaShader()) {
+            for (w in 0 until 4) {
+                val age = fx.timeSec - fx.shock.t0[w]
+                if (age < 0f || age > 1.1f) continue
+                val r = age * 620f * u
+                val band = 46f * u
+                val outer = r + band
+                val a = (exp(-age * 2.6f) * fx.shock.power[w] * 0.18f).coerceIn(0f, 1f)
+                val origin = Offset(fx.shock.ox[w], fx.shock.oy[w])
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        0f to Color.Transparent,
+                        ((r - band) / outer).coerceAtLeast(0f) to Color.Transparent,
+                        r / outer to NeonCyan.copy(alpha = a),
+                        1f to Color.Transparent,
+                        center = origin, radius = outer,
+                    ),
+                    radius = outer, center = origin, blendMode = BlendMode.Plus,
+                )
+            }
         }
 
         drawParticles(fx.sparks)

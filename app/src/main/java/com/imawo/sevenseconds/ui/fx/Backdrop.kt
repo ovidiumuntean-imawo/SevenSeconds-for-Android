@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -28,7 +27,7 @@ import kotlin.math.sin
  */
 @Composable
 fun Backdrop(fx: FxEngine, modifier: Modifier = Modifier) {
-    val shockProvider = remember { createShockwaveProvider() }
+    val shockProvider = fx.rippleProvider
 
     Box(modifier.fillMaxSize().background(DeepSpace)) {
         Box(

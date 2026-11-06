@@ -5,14 +5,14 @@
   Pe iOS achievements au id-uri de forma seven.seconds.master; pe Android Google generează id-uri CgkI…
 -->
 <resources>
-    <string name="game_services_project_id" translatable="false">REPLACE_ME</string>
+    <string name="game_services_project_id" translatable="false">148943679143</string>
 
-    <string name="leaderboard_main" translatable="false">REPLACE_ME</string>
+    <string name="leaderboard_main" translatable="false">CgkIp93w7aoEEAIQAQ</string>
 
-    <string name="achievement_dedicated_player" translatable="false">REPLACE_ME</string>
-    <string name="achievement_super_player" translatable="false">REPLACE_ME</string>
-    <string name="achievement_master" translatable="false">REPLACE_ME</string>
-    <string name="achievement_super_hero" translatable="false">REPLACE_ME</string>
-    <string name="achievement_god" translatable="false">REPLACE_ME</string>
-    <string name="achievement_cheater" translatable="false">REPLACE_ME</string>
+    <string name="achievement_dedicated_player" translatable="false">CgkIp93w7aoEEAIQAg</string>
+    <string name="achievement_super_player" translatable="false">CgkIp93w7aoEEAIQAw</string>
+    <string name="achievement_master" translatable="false">CgkIp93w7aoEEAIQBA</string>
+    <string name="achievement_super_hero" translatable="false">CgkIp93w7aoEEAIQBQ</string>
+    <string name="achievement_god" translatable="false">CgkIp93w7aoEEAIQBg</string>
+    <string name="achievement_cheater" translatable="false">CgkIp93w7aoEEAIQBw</string>
 </resources>

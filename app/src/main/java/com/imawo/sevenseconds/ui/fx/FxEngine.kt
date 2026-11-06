@@ -35,7 +35,7 @@ private val GOLD = intArrayOf(SysYellow.toArgb(), WHITE, NeonOrange.toArgb(), 0x
  * Compozabilele de desen citesc `subscribe()` în faza de desenare ⇒ se redesenează la fiecare cadru FĂRĂ recompoziție.
  *
  * „heat" (0..1) = cât de repede tastezi. Controlează culoarea scânteilor, viteza inelelor,
- * intensitatea fulgerelor din buton, viteza stardust-ului, tăria haptics-urilor și a shake-ului.
+ * viteza stardust-ului, tăria haptics-urilor și a shake-ului.
  */
 @Stable
 class FxEngine {
@@ -74,6 +74,12 @@ class FxEngine {
     val sparks = ParticleSystem(520)
     val stars = StarField(110)
     val shock = ShockwaveState()
+
+    /** Ripple-ul real: distorsiunea AGSL a fundalului (Android 13+). null pe dispozitivele fără suport. */
+    val rippleProvider: ShockwaveEffectProvider? = createShockwaveProvider()
+
+    fun rippleViaShader(): Boolean = rippleProvider?.isUsable == true
+
     val floaters = FloaterSystem(24)
 
     // ── scalari de efect ──

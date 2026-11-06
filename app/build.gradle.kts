@@ -60,6 +60,9 @@ dependencies {
     // Example Coroutines dependency
     implementation(libs.kotlinx.coroutines.core)
 
+    implementation(libs.androidx.fragment.ktx)
+// or a newer stable version
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -30,8 +30,11 @@ class ShockwaveState {
     }
 }
 
-/** Distorsiune reală a fundalului (AGSL, Android 13+). Pe versiuni mai vechi rămân doar inelele desenate. */
+/** Distorsiune reală a fundalului (AGSL, Android 13+). Pe versiuni mai vechi se desenează o undă moale, fără contur. */
 interface ShockwaveEffectProvider {
+    /** false dacă shaderul a eșuat la rulare pe acest dispozitiv. */
+    val isUsable: Boolean
+
     fun effect(state: ShockwaveState, nowSec: Float, pxPerDp: Float): ComposeRenderEffect?
 }
 
@@ -40,7 +43,7 @@ fun createShockwaveProvider(): ShockwaveEffectProvider? =
         try {
             AgslShockwave()
         } catch (ignored: Throwable) {
-            null // shaderul nu s-a compilat pe acest dispozitiv ⇒ fallback la inele
+            null // shaderul nu s-a compilat pe acest dispozitiv ⇒ fallback: undă moale, fără contur
         }
     } else {
         null
@@ -77,6 +80,9 @@ private class AgslShockwave : ShockwaveEffectProvider {
     private val shader = RuntimeShader(SHOCK_AGSL)
     private val names = arrayOf("w0", "w1", "w2", "w3")
     private var broken = false
+
+    override val isUsable: Boolean
+        get() = !broken
 
     override fun effect(state: ShockwaveState, nowSec: Float, pxPerDp: Float): ComposeRenderEffect? {
         if (broken || !state.anyActive(nowSec)) return null

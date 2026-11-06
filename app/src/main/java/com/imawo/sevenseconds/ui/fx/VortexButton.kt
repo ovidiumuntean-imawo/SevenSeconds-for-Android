@@ -51,9 +51,7 @@ import com.imawo.sevenseconds.R
 import com.imawo.sevenseconds.core.GameConfig
 import com.imawo.sevenseconds.ui.theme.NeonBlue
 import com.imawo.sevenseconds.ui.theme.NeonCyan
-import kotlin.math.cos
 import kotlin.math.sin
-import kotlin.random.Random
 import kotlinx.coroutines.launch
 
 /** Geometria și stilurile care depind doar de densitate — create o singură dată, nu în fiecare cadru. */
@@ -66,12 +64,8 @@ internal class VortexStyle(u: Float) {
         3f * u, cap = StrokeCap.Round,
         pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f * u, 50f * u, 20f * u, 40f * u)),
     )
-    val arcWide = Stroke(8f * u, cap = StrokeCap.Round, join = StrokeJoin.Round)
-    val arcMid = Stroke(3.2f * u, cap = StrokeCap.Round, join = StrokeJoin.Round)
-    val arcThin = Stroke(1.3f * u, cap = StrokeCap.Round, join = StrokeJoin.Round)
     val rim = Stroke(2f * u)
     val boltGlow = Stroke(7f * u, join = StrokeJoin.Round)
-    val arcPath = Path()
 
     /** Fulgerul, centrat pe (0,0), 60dp înălțime. */
     val bolt = Path().apply {
@@ -92,7 +86,6 @@ internal class VortexStyle(u: Float) {
 
 /**
  * Butonul „Vortex Electric" — portul lui ArcButton din iOS, cu adaosuri:
- *  - fulgere procedurale care se regenerează ~16–26 Hz (mai multe și mai groase cu cât tastezi mai repede);
  *  - inelele se rotesc mai repede cu „heat";
  *  - bloom real (blur) pe Android 12+;
  *  - tap-ul se înregistrează la ATINGERE (nu la ridicarea degetului) și suportă mai multe degete.
@@ -244,17 +237,8 @@ private fun DrawScope.drawVortexMain(fx: FxEngine, press: Float, st: VortexStyle
     if (press > 0.01f) {
         drawCircle(Color.White.copy(alpha = 0.22f * press), radius = coreR * 0.92f, center = c, blendMode = BlendMode.Plus)
     }
-    if (kick > 0.02f) {
-        drawCircle(
-            Color.White.copy(alpha = 0.6f * kick), radius = (90f + 70f * (1f - kick)) * u,
-            center = c, style = st.rim, blendMode = BlendMode.Plus,
-        )
-    }
 
-    // 4. fulgere
-    drawArcs(fx, st, c, u, bloom = false)
-
-    // 5. simbolul bolt
+    // 4. simbolul bolt
     val jitter = if (fx.running) 0.04f * sin(t * 80f) else 0f
     val bs = (1f - 0.2f * press) * (1f + jitter)
     withTransform({
@@ -273,7 +257,6 @@ private fun DrawScope.drawVortexBloom(fx: FxEngine, press: Float, st: VortexStyl
     val kick = fx.pulse
     val coreR = 90f * u * (1f + 0.07f * kick - 0.06f * press)
     drawCircle(NeonCyan.copy(alpha = 0.50f + 0.25f * fx.heat + 0.20f * kick), radius = coreR * 0.92f, center = c)
-    drawArcs(fx, st, c, u, bloom = true)
     val bs = 1f - 0.2f * press
     withTransform({
         translate(c.x, c.y - 6f * u)
@@ -281,55 +264,4 @@ private fun DrawScope.drawVortexBloom(fx: FxEngine, press: Float, st: VortexStyl
     }) {
         drawPath(st.bolt, Color.White.copy(alpha = 0.9f))
     }
-}
-
-private fun DrawScope.drawArcs(fx: FxEngine, st: VortexStyle, c: Offset, u: Float, bloom: Boolean) {
-    if (fx.reduce) return
-    val heat = fx.heat
-    val seed = (fx.timeSec * (16f + 10f * heat)).toInt()
-    val rnd = Random(seed * 7919 + 13)
-    val nRadial = 2 + (heat * 4f).toInt()
-    val nRing = 1 + (heat * 2.5f).toInt()
-    val k = 0.75f + 0.25f * heat
-    val path = st.arcPath
-
-    for (i in 0 until nRadial) {
-        val a0 = rnd.nextFloat() * TAU
-        val r0 = 84f * u
-        val r1 = (118f + rnd.nextFloat() * 42f) * u
-        path.rewind()
-        path.moveTo(c.x + cos(a0) * r0, c.y + sin(a0) * r0)
-        val segs = 7
-        for (s in 1..segs) {
-            val f = s / segs.toFloat()
-            val r = mix(r0, r1, f)
-            val a = a0 + (rnd.nextFloat() - 0.5f) * 0.5f
-            path.lineTo(c.x + cos(a) * r, c.y + sin(a) * r)
-        }
-        strokeBolt(path, st, k, bloom)
-    }
-    for (i in 0 until nRing) {
-        val a0 = rnd.nextFloat() * TAU
-        val span = 0.45f + rnd.nextFloat() * 0.8f
-        val segs = 10
-        path.rewind()
-        for (s in 0..segs) {
-            val a = a0 + span * s / segs
-            val r = (100f + (rnd.nextFloat() - 0.5f) * 16f) * u
-            val x = c.x + cos(a) * r
-            val y = c.y + sin(a) * r
-            if (s == 0) path.moveTo(x, y) else path.lineTo(x, y)
-        }
-        strokeBolt(path, st, k, bloom)
-    }
-}
-
-private fun DrawScope.strokeBolt(path: Path, st: VortexStyle, k: Float, bloom: Boolean) {
-    if (bloom) {
-        drawPath(path, NeonCyan.copy(alpha = 0.6f * k), style = st.arcWide, blendMode = BlendMode.Plus)
-        return
-    }
-    drawPath(path, NeonCyan.copy(alpha = 0.14f * k), style = st.arcWide, blendMode = BlendMode.Plus)
-    drawPath(path, NeonCyan.copy(alpha = 0.55f * k), style = st.arcMid, blendMode = BlendMode.Plus)
-    drawPath(path, Color.White.copy(alpha = 0.95f * k), style = st.arcThin, blendMode = BlendMode.Plus)
 }

@@ -56,8 +56,8 @@
     <string name="rank_super">SUPER PLAYER</string>
     <string name="rank_master">MASTER</string>
     <string name="rank_hero">SUPER HERO</string>
-    <string name="rank_god">GOD</string>
-    <string name="rank_cheater">CHEATER?</string>
+    <string name="rank_inhuman">INHUMAN</string>
+    <string name="rank_god">GOD?</string>
 
     <!-- Mesaje de rank (identice cu iOS) -->
     <string name="msg_rookie">Every pro starts somewhere.\nYour journey just began! 🌟\n\nDon’t stop now – the button’s getting nervous!</string>
@@ -66,6 +66,6 @@
     <string name="msg_super">Super player unlocked.\nYou’re crushing it – what’s next? 💥\n\nKeep going – the button might file a restraining order!</string>
     <string name="msg_master">Master status achieved.\nThat’s some serious button-smashing talent! 👑\n\nPush harder – you’re one click away from greatness!</string>
     <string name="msg_hero">Legends play like this.\nLeaderboard domination in progress! 🏆\n\nKeep smashing – you’re the hero this button deserves!</string>
-    <string name="msg_god">Did you just bend time?\nThe button fears you now. Respect!\n\nThe gods are watching – don’t let them down!</string>
-    <string name="msg_cheater">Are your fingers okay?\nIf this is cheating, you’re the Picasso of it. 🎨\n\nJust make sure your button doesn’t explode! 😅</string>
+    <string name="msg_inhuman">Did you just bend time?\nThe button fears you now. Respect!\n\nThe gods are watching – don’t let them down!</string>
+    <string name="msg_god">Are your fingers okay?\nIf this is cheating, you’re the God of Seven Seconds: Champions! 🎨\n\nJust make sure your button doesn’t explode! 😅</string>
 </resources>

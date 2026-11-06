@@ -202,7 +202,7 @@ private fun TimerLabel(fx: FxEngine, phase: Phase) {
 
 @Composable
 private fun ScoreBlock(vm: GameViewModel, fx: FxEngine) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(bottom = 4.dp)) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(top = 64.dp)) {
         Text(
             text = stringResource(R.string.score_label),
             color = NeonCyan.copy(alpha = 0.8f), fontSize = 18.sp,

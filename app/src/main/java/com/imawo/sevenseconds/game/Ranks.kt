@@ -21,8 +21,8 @@ object Ranks {
         Rank(50, R.string.rank_super, R.string.msg_super, R.string.achievement_super_player),
         Rank(70, R.string.rank_master, R.string.msg_master, R.string.achievement_master),
         Rank(90, R.string.rank_hero, R.string.msg_hero, R.string.achievement_super_hero),
-        Rank(110, R.string.rank_god, R.string.msg_god, R.string.achievement_god),
-        Rank(145, R.string.rank_cheater, R.string.msg_cheater, R.string.achievement_cheater),
+        Rank(110, R.string.rank_inhuman, R.string.msg_inhuman, R.string.achievement_god),
+        Rank(145, R.string.rank_god, R.string.msg_god, R.string.achievement_cheater),
     )
 
     fun forScore(score: Int): Rank = all.last { score >= it.min }
